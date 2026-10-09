@@ -2,33 +2,58 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>WebAR Test</title>
-    <!-- A-Frame -->
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <!-- AR.js (A-Frame用) -->
-    <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.5/aframe/build/aframe-ar.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAR Viewer</title>
+    <!-- Google製の安全な3D/AR表示ライブラリを読み込み -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            background: #f0f0f0;
+            font-family: sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        model-viewer {
+            width: 100%;
+            height: 80vh;
+        }
+        .ar-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
+<body>
+
+    <!-- 3Dモデルを表示・AR起動する要素 -->
+    <!-- src="model.glb" の部分は、お使いのモデルファイル名に合わせてください -->
+    <model-viewer 
+        src="model.glb" 
+        ios-src=""
+        ar 
+        ar-modes="scene-viewer quick-look webxr" 
+        camera-controls 
+        auto-rotate
+        alt="3D Model">
         
-        <!-- 3Dモデルの事前読み込み -->
-        <a-assets>
-            <a-asset-item id="target-model" src="model.glb"></a-asset-item>
-        </a-assets>
+        <!-- スマホでARを起動するボタン -->
+        <button slot="ar-button" class="ar-button">
+            📦 実際の空間で見る (AR)
+        </button>
+    </model-viewer>
 
-        <!-- マーカーの定義（今回は例として一般的なhiroマーカー、または中心に表示） -->
-        <a-marker preset="hiro">
-            <!-- マーカーの上に表示される3Dモデル -->
-            <a-entity 
-                gltf-model="#target-model" 
-                scale="0.5 0.5 0.5" 
-                position="0 0 0">
-            </a-entity>
-        </a-marker>
-
-        <!-- カメラ -->
-        <a-entity camera></a-entity>
-    </a-scene>
 </body>
 </html>
