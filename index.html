@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>WebAR - Tap to Place</title>
+    <title>WebAR - Initial Display Test</title>
     <!-- A-Frameライブラリの読み込み -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <!-- WebAR用のA-Frameコンポーネント（WebXR Hit-Test対応） -->
+    <!-- WebAR用のA-Frameコンポーネント（WebXR対応） -->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <style>
         body {
@@ -31,31 +31,28 @@
     </style>
 </head>
 <body>
-    <div id="instructions">床や平面をカメラで映し、画面をタップしてモデルを配置してください</div>
+    <div id="instructions">カメラの前に3Dモデルが表示されています</div>
 
     <!-- A-Frame シーンの定義 -->
     <a-scene 
-        webxr="requiredFeatures: hit-test, local-floor; optionalFeatures: dom-overlay; overlayElement: #instructions;"
+        webxr="requiredFeatures: local-floor; optionalFeatures: dom-overlay; overlayElement: #instructions;"
         vr-mode-ui="enabled: false"
-        renderer="logarithmicDepthBuffer: true;"
-        ar-hit-test="target: #model;">
+        renderer="logarithmicDepthBuffer: true;">
         
         <!-- アセット（3Dモデル）の事前読み込み -->
         <a-assets>
-            <!-- model.glb の部分をご自身のファイル名に変更してください -->
             <a-asset-item id="target-model" src="model.glb"></a-asset-item>
         </a-assets>
 
         <!-- カメラ -->
-        <a-entity camera></a-entity>
+        <a-entity camera position="0 1.6 0"></a-entity>
 
-        <!-- タップで配置される3Dモデル（最初は非表示、タップで出現＆移動） -->
+        <!-- 最初から目の前（前方1.5m、少し下）に表示される3Dモデル -->
         <a-entity 
-            id="model" 
             gltf-model="#target-model" 
             scale="0.5 0.5 0.5" 
-            position="0 0 0"
-            visible="false">
+            position="0 0 -1.5"
+            rotation="0 0 0">
         </a-entity>
     </a-scene>
 </body>
