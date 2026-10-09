@@ -3,57 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>WebAR - Initial Display Test</title>
-    <!-- A-Frameライブラリの読み込み -->
+    <title>WebAR Box Test</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <!-- WebAR用のA-Frameコンポーネント（WebXR対応） -->
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-        #instructions {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-family: sans-serif;
-            font-size: 14px;
-            z-index: 10;
-            pointer-events: none;
-            text-align: center;
+        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        #ar-button {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            background: #e53935; color: white; padding: 16px 32px;
+            border-radius: 30px; font-size: 16px; font-weight: bold; border: none;
+            z-index: 999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div id="instructions">カメラの前に3Dモデルが表示されています</div>
 
-    <!-- A-Frame シーンの定義 -->
+    <button id="ar-button">赤い箱でARテスト</button>
+
     <a-scene 
-        webxr="requiredFeatures: local-floor; optionalFeatures: dom-overlay; overlayElement: #instructions;"
+        webxr="requiredFeatures: local-floor; optionalFeatures: hit-test, dom-overlay;"
         vr-mode-ui="enabled: false"
         renderer="logarithmicDepthBuffer: true;">
-        
-        <!-- アセット（3Dモデル）の事前読み込み -->
-        <a-assets>
-            <a-asset-item id="target-model" src="model.glb"></a-asset-item>
-        </a-assets>
 
         <!-- カメラ -->
         <a-entity camera position="0 1.6 0"></a-entity>
 
-        <!-- 最初から目の前（前方1.5m、少し下）に表示される3Dモデル -->
-        <a-entity 
-            gltf-model="#target-model" 
-            scale="0.5 0.5 0.5" 
-            position="0 0 -1.5"
-            rotation="0 0 0">
-        </a-entity>
+        <!-- 3Dモデルの代わりに、赤いテスト用の箱を目の前に配置 -->
+        <a-box 
+            position="0 1 -1.5" 
+            rotation="0 45 0" 
+            color="#ef2d5e" 
+            depth="0.5" 
+            height="0.5" 
+            width="0.5">
+        </a-box>
+
+        <!-- 空（背景） -->
+        <a-sky color="#ECECEC"></a-sky>
     </a-scene>
+
+    <script>
+        const sceneEl = document.querySelector('a-scene');
+        const arButton = document.getElementById('ar-button');
+        arButton.addEventListener('click', () => {
+            if (sceneEl.enterVR) {
+                sceneEl.enterVR();
+            }
+        });
+    </script>
 </body>
 </html>
